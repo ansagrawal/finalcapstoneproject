@@ -32,4 +32,20 @@ async function findUser(username) {
 
 }
 
-export { findUser };
+async function getUsers() {
+    try {
+        await connectToDb();
+        const usersCollection = db.collection("users");
+        const prj = { user: 1, email: 1, _id: 0 };
+        const users = await usersCollection.find({}).project(prj).toArray();
+        return users;
+    } catch (error) {
+        console.error('An error occurred while fetching users:', error);
+        throw error;
+    } finally {
+        // Ensure the database connection closes on exit
+        await client.close();
+    }
+}
+
+export { findUser, getUsers };
