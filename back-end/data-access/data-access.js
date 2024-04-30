@@ -20,7 +20,7 @@ async function findUser(username) {
     try {
         await connectToDb();
         const usersCollection = db.collection("users");
-        const user = await usersCollection.findOne({ user: username });
+        const user = await usersCollection.findOne({ username: username });
         return user;
     } catch (error) {
         console.error('An error occurred while logging in:', error);
@@ -36,7 +36,7 @@ async function getUsers() {
     try {
         await connectToDb();
         const usersCollection = db.collection("users");
-        const prj = { user: 1, email: 1, _id: 0 };
+        const prj = { username: 1, email: 1, _id: 0 };
         const users = await usersCollection.find({}).project(prj).toArray();
         return users;
     } catch (error) {
@@ -48,4 +48,30 @@ async function getUsers() {
     }
 }
 
-export { findUser, getUsers };
+async function createUser(newUser) {
+
+    try {
+        await connectToDb();
+        const userCollection = db.collection("users");
+        const filter = {
+            $or: [
+                { user: newUser.username },  // First condition
+                { email: newUser.email }   // Second condition
+            ]
+        };
+        const existingUser = await userCollection.findOne(filter); // Check for existing user
+        if (existingUser) {
+            return ["fail", null, 'User already exists'];
+        }
+        const result = await userCollection.insertOne(newUser);
+        return ["success", result.insertedId, null]; // Success, return inserted ID
+    } catch (err) {
+        return ["fail", null, err.message]; // Error, return error message
+    } finally {
+        // Ensure the database connection closes on exit
+        await client.close();
+    }
+
+}
+
+export { findUser, getUsers, createUser };

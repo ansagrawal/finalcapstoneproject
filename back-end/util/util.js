@@ -16,8 +16,8 @@ function validateNewUser(req, res, next) {
         return res.status(400).send('Missing request body');
     }
     // Checking if the request body contains an id field
-    if (!newUser.user) {
-        return res.status(400).send('User is required');
+    if (!newUser.username) {
+        return res.status(400).send('Username is required');
     }
     // Checking if the request body contains an email field
     if (!newUser.email) {

@@ -1,9 +1,28 @@
 import express from "express";
 const router = express.Router();
 import { validateUserData, validateNewUser } from '../../util/util.js';
-import { findUser, getUsers } from '../../data-access/data-access.js';
+import { findUser, getUsers, createUser } from '../../data-access/data-access.js';
 import { isAuthenticated, generateAccessToken, hashPassword, verifyUserToken } from '../../auth/auth.js';
 
+
+router.post('/', validateNewUser, async (req, res) => {
+
+    const newUser = req.body;
+
+    try {
+        newUser.password = await hashPassword(newUser.password);
+        const [status, id, errMessage] = await createUser(newUser);
+        if (status === "success") {
+            newUser._id = id; // Add _id property for response
+            return res.status(201).json(newUser); // Created (201) with admin data
+        }
+        console.error(errMessage); // Log error message for debugging
+        return res.status(400).send(errMessage); // Bad Request (400) with error message
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error'); // Generic error for unexpected issues
+    }
+});
 
 router.post('/authenticate', async (req, res) => {
     const { username, password } = req.body;
@@ -12,8 +31,9 @@ router.post('/authenticate', async (req, res) => {
     }
 
     const registeredUser = await findUser(username);
+    console.log(registeredUser);
     if (!registeredUser || !await isAuthenticated(password, registeredUser.password)) {
-        return res.status(401).send({ message: 'Invalid email or password' });
+        return res.status(401).send({ message: 'Invalid username or password' });
     }
     const token = generateAccessToken(username, password);
     res.json({ token });
