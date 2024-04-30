@@ -18,7 +18,6 @@ router.post('/', (req, res) => {
     const data = JSON.stringify(queryArray, null, 2);
     try {
         fs.writeFileSync('queries.json', data);
-        console.log('query array saved to queries.json');
         res.status(200).send("query array saved");
     } catch (err) {
         console.error(err);
