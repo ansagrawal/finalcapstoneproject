@@ -12,7 +12,6 @@ router.post('/authenticate', async (req, res) => {
     }
 
     const registeredUser = await findUser(username);
-    console.log(registeredUser);
     if (!registeredUser || !await isAuthenticated(password, registeredUser.password)) {
         return res.status(401).send({ message: 'Invalid email or password' });
     }
