@@ -1,3 +1,4 @@
+import { LoginForm } from './LoginForm';
 import { SavedQueries } from './SavedQueries';
 import { QueryForm } from './QueryForm';
 import { Articles } from './Articles';
@@ -7,9 +8,12 @@ import { exampleQuery, exampleData } from './data';
 export function NewsReader() {
   const [query, setQuery] = useState(exampleQuery); // latest query send to newsapi
   const [data, setData] = useState(exampleData);   // current data returned from newsapi
+  const [currentUser, setCurrentUser] = useState(null);
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [queryFormObject, setQueryFormObject] = useState({ ...exampleQuery });
   const urlNews = "/news";
   const urlQueries = "/queries";
+  const urlUsersAuth = "/users/authenticate";
   const [savedQueries, setSavedQueries] = useState([{ ...exampleQuery }]);
 
   useEffect(() => {
@@ -30,6 +34,33 @@ export function NewsReader() {
       console.error('Error fetching news:', error);
     }
   }
+
+  async function login() {
+    if (currentUser !== null) {
+      // logout
+      setCurrentUser(null);
+    } else {
+      // login
+      try {
+        const response = await fetch(urlUsersAuth, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(credentials),
+        });
+        if (response.status === 200) {
+          setCurrentUser({ ...credentials });
+          setCredentials({ username: "", password: "" });
+        } else {
+          alert("Error during authentication! " + credentials.username + "/" + credentials.password);
+          setCurrentUser(null);
+        }
+      } catch (error) {
+        console.error('Error authenticating user:', error);
+        setCurrentUser(null);
+      }
+    }
+  }
+
   async function saveQueryList(savedQueries) {
     try {
       const response = await fetch(urlQueries, {
@@ -89,6 +120,10 @@ export function NewsReader() {
 
   return (
     <div>
+      <LoginForm login={login}
+        credentials={credentials}
+        currentUser={currentUser}
+        setCredentials={setCredentials} />
       <div >
         <section className="parent" >
           <div className="box">
