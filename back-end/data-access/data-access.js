@@ -55,7 +55,7 @@ async function createUser(newUser) {
         const userCollection = db.collection("users");
         const filter = {
             $or: [
-                { user: newUser.username },  // First condition
+                { username: newUser.username },  // First condition
                 { email: newUser.email }   // Second condition
             ]
         };

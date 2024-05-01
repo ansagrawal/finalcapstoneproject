@@ -11,8 +11,48 @@ export function LoginForm(params) {
         params.setCredentials(newCredentials);
     };
 
-    const handleRegisterClick = () => {
-        setShowEmailField(true);
+    const validateEmail = (email) => {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    };
+
+    const handleRegisterClick = async () => {
+        if (!showEmailField) {
+            setShowEmailField(true);
+            params.credentials.username = '';
+            params.credentials.password = '';
+            return;
+        }
+        if (!params.credentials.username && !params.credentials.password || !email) {
+            alert("Missing required fields!");
+            return;
+        }
+        if (!validateEmail(email)) {
+            alert('Invalid email format');
+            return;
+        }
+        try {
+            const response = await fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: params.credentials.username,
+                    password: params.credentials.password,
+                    email: email
+                })
+            });
+            if (response.ok) {
+                await response.json();
+                alert('User registered!');
+            } else {
+                throw new Error('Failed to register user');
+            }
+        } catch (error) {
+            console.error('Error registering user:', error);
+            alert('An error occurred during registration.');
+        }
     };
 
     const handleBackToLogin = () => {
