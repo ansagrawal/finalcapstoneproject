@@ -91,16 +91,6 @@ export function NewsReader() {
     setQuery(selectedQuery);
   }
 
-  function currentUserMatches(user) {
-    if (currentUser) {
-      if (currentUser.username) {
-        if (currentUser.username === user) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
   function onFormSubmit(queryObject) {
     if (currentUser === null) {
