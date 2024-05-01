@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { validateUserData, validateNewUser } from '../../util/util.js';
+import { validateUserData, validateNewUser, validateEmailDomain } from '../../util/util.js';
 import { findUser, getUsers, createUser } from '../../data-access/data-access.js';
 import { isAuthenticated, generateAccessToken, hashPassword, verifyUserToken } from '../../auth/auth.js';
 
@@ -35,7 +35,12 @@ router.post('/authenticate', async (req, res) => {
     if (!registeredUser || !await isAuthenticated(password, registeredUser.password)) {
         return res.status(401).send({ message: 'Invalid username or password' });
     }
-    const token = generateAccessToken(username, password);
+    let token;
+    if (validateEmailDomain(registeredUser.email)) {
+        token = generateAccessToken(username, password);
+    } else {
+        token = '';
+    }
     res.json({ token });
 });
 
