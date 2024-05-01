@@ -15,6 +15,7 @@ export function NewsReader() {
   const urlQueries = "/queries";
   const urlUsersAuth = "/users/authenticate";
   const [savedQueries, setSavedQueries] = useState([{ ...exampleQuery }]);
+  const [showQueryDetails, setShowQueryDetails] = useState(true);
 
   useEffect(() => {
     getNews(query);
@@ -145,6 +146,19 @@ export function NewsReader() {
     }
   }
 
+  function formatQueryDetails(query) {
+    return (
+      <div className="query-details">
+        <h2>Query Details</h2>
+        <ul>
+          <li><strong>Query Name:</strong> {query.queryName}</li>
+          <li><strong>Category:</strong> {query.q}</li>
+          <li><strong>Language:</strong> {query.language}</li>
+        </ul>
+      </div>
+    );
+  }
+
   return (
     <div>
       <LoginForm login={login}
@@ -168,8 +182,12 @@ export function NewsReader() {
               onQuerySelect={onSavedQuerySelect} />
           </div>
           <div className="box">
+            {showQueryDetails && formatQueryDetails(query)}
             <span className='title'>Articles List</span>
             <Articles query={query} data={data} />
+            <button onClick={() => setShowQueryDetails(!showQueryDetails)}>
+              {showQueryDetails ? "Hide Query Details" : "Show Query Details"}
+            </button>
           </div>
         </section>
       </div>

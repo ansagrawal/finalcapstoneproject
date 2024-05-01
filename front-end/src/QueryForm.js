@@ -41,7 +41,6 @@ export function QueryForm(params) {
                     <input type="text" size={10} id="q" name="q" value={params.formObject.q} onChange={handleChange} />
                 </div>
                 <div className={(currentUserIsAdmin()) ? "visible" : "hidden"}
-                // style={{ border: "solid black 1px" }}
                 >
                     {/* Extra fields */}
                     <div>
