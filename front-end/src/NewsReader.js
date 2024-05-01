@@ -106,7 +106,7 @@ export function NewsReader() {
       alert("Log in if you want to create new queries!")
       return;
     }
-    if (savedQueries.length >= 3 && currentUserMatches("guest")) {
+    if (savedQueries.length >= 3 && !localStorage.getItem(currentUser.username)) {
       alert("guest users cannot submit new queries once saved query count is 3 or greater!")
       return;
     }

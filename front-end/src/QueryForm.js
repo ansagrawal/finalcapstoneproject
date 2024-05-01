@@ -21,10 +21,9 @@ export function QueryForm(params) {
 
     function currentUserIsAdmin() {
         if (params.currentUser) {
-            if (params.currentUser.username) {
-                if (params.currentUser.username === "admin") {
-                    return true;
-                }
+            const storedToken = localStorage.getItem(params.currentUser.username);
+            if (storedToken) {
+                return true;
             }
         }
         return false;
