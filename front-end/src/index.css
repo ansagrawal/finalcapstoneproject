@@ -75,6 +75,18 @@ code {
   display: block;
 }
 
+.articles-container {
+  height: 300px;
+  /* Pre-defined height for the articles list */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+}
+
+.article-list-container {
+  max-height: 100%;
+  /* Ensure the list container fills the available height */
+}
+
 .article-list {
   list-style: none;
   /* Remove bullet points */

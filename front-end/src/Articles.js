@@ -4,23 +4,25 @@ export function Articles(params) {
   const articleCount = params.data.totalResults || 0;
 
   return (
-    <div>
+    <div className="articles-container">
       <p>Query: {queryName}</p>
       <p>Count: {articleCount}</p>
-      <ul className="article-list">
-        {articles.map((item, idx) => {
-          const title = item && item.title ? item.title : "No Title";
-          const trimmedTitle = title.length > 50 ? title.substring(0, 50) + "..." : title;
+      <div className="article-list-container">
+        <ul className="article-list">
+          {articles.map((item, idx) => {
+            const title = item && item.title ? item.title : "No Title";
+            const trimmedTitle = title.length > 50 ? title.substring(0, 50) + "..." : title;
 
-          return (
-            <li key={idx}>
-              <a href={item.url} target="_blank" rel="noreferrer">
-                {trimmedTitle}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li key={idx}>
+                <a href={item.url} target="_blank" rel="noreferrer">
+                  {trimmedTitle}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
