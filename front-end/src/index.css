@@ -7,67 +7,91 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-header p{
+header p {
   font-size: large;
 }
 
-ol{
-  padding-left:20px;
+ol {
+  padding-left: 20px;
 }
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-.left{
-  float:left;
-  border:1px solid black;
+.left {
+  float: left;
+  border: 1px solid black;
 }
 
-.right{
-  float:right;
-  border:1px solid black;
+.right {
+  float: right;
+  border: 1px solid black;
 }
 
-.parent{
-  display:flex;
+.parent {
+  display: flex;
   flex-direction: row;
 }
 
-.box{
-  border:1px solid black;
-  flex:1;
+.box {
+  border: 1px solid black;
+  flex: 1;
   padding: 5px;
   max-width: 300px;
   font-size: small;
 }
 
-.box span{
+.box span {
   padding: 3px;
   text-align: center;
 }
 
-.title{
+.title {
   font-weight: bold;
   display: block;
   background-color: #888;
   color: white;
 }
 
-.selected{
+.selected {
   font-weight: bold;
 }
 
-.hidden{
-  display:none;
-}
-.visible{
-  display:block;
+.hidden {
+  display: none;
 }
 
-.moreHidden{
-  display:none;
+.visible {
+  display: block;
 }
-.moreVisible{
-  display:block;
+
+.moreHidden {
+  display: none;
+}
+
+.moreVisible {
+  display: block;
+}
+
+.article-list {
+  list-style: none;
+  /* Remove bullet points */
+  padding: 0;
+  /* Remove default padding */
+}
+
+.article-list li {
+  margin-bottom: 10px;
+  /* Adjust as needed */
+}
+
+.article-list a {
+  text-decoration: none;
+  /* Remove underline */
+  color: #333;
+  /* Adjust color as needed */
+  font-size: 16px;
+  /* Reduce font size for better readability */
 }
