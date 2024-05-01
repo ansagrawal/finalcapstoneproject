@@ -42,14 +42,20 @@ export function NewsReader() {
     } else {
       // login
       try {
+        const storedToken = localStorage.getItem(credentials.username);
+        const authHeader = storedToken ? { 'Authorization': `Bearer ${storedToken}` } : {};
         const response = await fetch(urlUsersAuth, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeader },
           body: JSON.stringify(credentials),
-        });
+        })
         if (response.status === 200) {
+          const data = await response.json();
+          const token = data.token.token;
+          localStorage.setItem(credentials.username, token);
           setCurrentUser({ ...credentials });
           setCredentials({ username: "", password: "" });
+
         } else if (response.status === 400) {
           alert("Invalid login details!");
         } else {

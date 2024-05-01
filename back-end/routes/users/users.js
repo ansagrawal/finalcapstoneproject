@@ -3,9 +3,7 @@ const router = express.Router();
 import { validateUserData, validateNewUser, validateEmailDomain } from '../../util/util.js';
 import { findUser, getUsers, createUser } from '../../data-access/data-access.js';
 import { isAuthenticated, generateAccessToken, hashPassword, verifyUserToken } from '../../auth/auth.js';
-import cookieParser from 'cookie-parser';
 
-router.use(cookieParser());
 
 
 router.post('/', validateNewUser, async (req, res) => {
@@ -41,14 +39,10 @@ router.post('/authenticate', async (req, res) => {
     let token;
     if (validateEmailDomain(registeredUser.email)) {
         token = generateAccessToken(username, password);
-        res.cookie('jwt_token', token, {
-            httpOnly: true, // Flag to prevent client-side JavaScript access
-            maxAge: 1000 * 60 * 60, // Expires in 1 hour
-        });
     } else {
         token = '';
     }
-    res.json({ message: 'Login successful!' });
+    res.json({ message: 'Login successful!', token: { token } });
 });
 
 router.get('/', async (req, res) => {

@@ -47,7 +47,7 @@ export function LoginForm(params) {
                 await response.json();
                 alert('User registered!');
             } else {
-                throw new Error('Failed to register user');
+                alert('An error occurred during registration.');
             }
         } catch (error) {
             console.error('Error registering user:', error);
