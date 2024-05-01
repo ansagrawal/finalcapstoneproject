@@ -50,8 +50,10 @@ export function NewsReader() {
         if (response.status === 200) {
           setCurrentUser({ ...credentials });
           setCredentials({ username: "", password: "" });
+        } else if (response.status === 400) {
+          alert("Invalid login details!");
         } else {
-          alert("Error during authentication! " + credentials.username + "/" + credentials.password);
+          alert("Error during authentication! " + credentials.username);
           setCurrentUser(null);
         }
       } catch (error) {
