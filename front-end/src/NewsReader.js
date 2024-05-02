@@ -36,15 +36,24 @@ export function NewsReader() {
     }
   }
 
+  function createAuthHeader() {
+    const storedToken = localStorage.getItem(currentUser.username);
+    const authHeader = storedToken ? { 'Authorization': `Bearer ${storedToken}` } : {};
+    return authHeader;
+  }
+
   async function login() {
     if (currentUser !== null) {
       // logout
+      localStorage.removeItem(currentUser.username);
       setCurrentUser(null);
     } else {
       // login
       try {
-        const storedToken = localStorage.getItem(credentials.username);
-        const authHeader = storedToken ? { 'Authorization': `Bearer ${storedToken}` } : {};
+        let authHeader;
+        if (currentUser !== null) {
+          authHeader = createAuthHeader();
+        }
         const response = await fetch(urlUsersAuth, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...authHeader },
@@ -71,9 +80,13 @@ export function NewsReader() {
 
   async function saveQueryList(savedQueries) {
     try {
+      let authHeader;
+      if (currentUser !== null) {
+        authHeader = createAuthHeader();
+      }
       const response = await fetch(urlQueries, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...authHeader },
         body: JSON.stringify(savedQueries),
       });
       if (!response.ok) {
@@ -116,9 +129,13 @@ export function NewsReader() {
   async function getNews(queryObject) {
     if (queryObject.q) {
       try {
+        let authHeader;
+        if (currentUser !== null) {
+          authHeader = createAuthHeader();
+        }
         const response = await fetch(urlNews, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeader },
           body: JSON.stringify(queryObject),
         });
 

@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
-import { logger } from '../util/util.js';
+import { logger } from '../logs/logConfig.js';
+import { AccessLog } from '../logs/accessLogModel.js';
 
 const uri = "mongodb://localhost:27017";
 const client = new MongoClient(uri);
@@ -14,6 +15,29 @@ async function connectToDb() {
     } catch (err) {
         console.error("Error connecting to MongoDB:", err);
     }
+}
+
+let accessLogCollection; // Global variable to store the collection
+
+(async () => {
+    const logAccessClient = new MongoClient(uri);
+    await logAccessClient.connect(); // Wait for connection
+    const db = logAccessClient.db(dbName);
+    accessLogCollection = db.collection("accessLogs");
+})(); // Connect to DB on startup
+
+async function logAccess(token, endpoint, method) {
+    const accessLog = new AccessLog(token, endpoint, method, new Date());
+    try {
+        await accessLogCollection.insertOne(accessLog); // Insert log into collection
+        logger.info(`Token: ${token}, Endpoint: ${endpoint}, Method: ${method}`); // Log to console
+    } catch (error) {
+        console.error('Error logging access:', error);
+    }
+}
+
+async function fetchLogs() {
+    return await accessLogCollection.find().toArray();
 }
 
 async function findUser(username) {
@@ -74,4 +98,4 @@ async function createUser(newUser) {
 
 }
 
-export { findUser, getUsers, createUser };
+export { findUser, getUsers, createUser, logAccess, fetchLogs };

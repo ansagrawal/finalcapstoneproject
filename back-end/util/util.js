@@ -41,18 +41,4 @@ function validateUserData(username, password) {
     return username && username.trim() && password && password.trim();
 }
 
-const logger = winston.createLogger({
-    level: 'info', // Set minimum log level
-    transports: [
-        new Console({
-            format: winston.format.combine(
-                winston.format.colorize(), // Add colors (optional)
-                winston.format.timestamp(),
-                winston.format.simple() // Basic message format
-            ),
-        }),
-    ],
-});
-
-
-export { logger, validateUserData, validateEmailDomain, validateNewUser };
+export { validateUserData, validateEmailDomain, validateNewUser };

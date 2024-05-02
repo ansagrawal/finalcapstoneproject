@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import { validateUserData, validateNewUser, validateEmailDomain } from '../../util/util.js';
 import { findUser, getUsers, createUser } from '../../data-access/data-access.js';
-import { isAuthenticated, generateAccessToken, hashPassword, verifyUserToken } from '../../auth/auth.js';
+import { isAuthenticated, generateAccessToken, hashPassword } from '../../auth/auth.js';
 
 
 

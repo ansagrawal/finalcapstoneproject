@@ -7,7 +7,7 @@ function generateAccessToken(username, password) {
     return jwt.sign(payload, secret, { expiresIn: '1h' }); // Set appropriate expiration time
 }
 
-function verifyUserToken(req, res, next) {
+function verifyAdminToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Extract token from header
 
@@ -31,4 +31,4 @@ async function isAuthenticated(password, hashedPassword) {
     return await bcrypt.compare(password, hashedPassword);
 }
 
-export { isAuthenticated, generateAccessToken, hashPassword, verifyUserToken };
+export { isAuthenticated, generateAccessToken, hashPassword, verifyAdminToken };
