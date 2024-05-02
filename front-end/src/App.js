@@ -4,9 +4,9 @@ import './App.css';
 function App() {
 
   return (
-    <div>
+    <div style={{ marginLeft: '10px', marginRight: '10px' }}>
       <header>
-        <p>News Reader App</p>
+        <p >ABC News Portal</p>
       </header>
       <NewsReader />
     </div>
