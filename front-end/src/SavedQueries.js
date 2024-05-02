@@ -1,9 +1,22 @@
 import { useState } from 'react';
 
 export function SavedQueries(params) {
+
+    const [selectedQuery, setSelectedQuery] = useState(null);
     const [showResetAlert, setShowResetAlert] = useState(false);
 
+    function currentUserIsAdmin() {
+        if (params.currentUser) {
+            const storedToken = localStorage.getItem(params.currentUser.username);
+            if (storedToken) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function onSavedQueryClick(savedQuery) {
+        setSelectedQuery(savedQuery);
         params.onQuerySelect(savedQuery);
     }
 
@@ -54,6 +67,20 @@ export function SavedQueries(params) {
                     <li>No Saved Queries, Yet!</li>
                 )}
             </ul>
+            <div className="query-details">
+                {selectedQuery && params.savedQueries && params.savedQueries.length > 0 && (
+                    <div>
+                        <p className="query-name">Name: {selectedQuery.queryName}</p>
+                        <p className="query-property">Search Term: {selectedQuery.q}</p>
+                        {currentUserIsAdmin() && (
+                            <>
+                                <p className="query-property">Language: {selectedQuery.language}</p>
+                                <p className="query-property">Page Size: {selectedQuery.pageSize}</p>
+                            </>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
