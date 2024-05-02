@@ -28,7 +28,6 @@ export function NewsReader() {
       const response = await fetch(urlQueries);
       if (response.ok) {
         const data = await response.json();
-        console.log("savedQueries has been retrieved: ");
         setSavedQueries(data);
       }
     } catch (error) {
@@ -92,7 +91,6 @@ export function NewsReader() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log("savedQueries array has been persisted:");
     } catch (error) {
       console.error('Error fetching news:', error);
     }
@@ -120,7 +118,6 @@ export function NewsReader() {
         newSavedQueries.push(query);
       }
     }
-    console.log(JSON.stringify(newSavedQueries));
     saveQueryList(newSavedQueries);
     setSavedQueries(newSavedQueries);
     setQuery(queryObject);
