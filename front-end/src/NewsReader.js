@@ -56,16 +56,15 @@ export function NewsReader() {
           localStorage.setItem(credentials.username, token);
           setCurrentUser({ ...credentials });
           setCredentials({ username: "", password: "" });
-
-        } else if (response.status === 400) {
-          alert("Invalid login details!");
         } else {
-          alert("Error during authentication! " + credentials.username);
           setCurrentUser(null);
+          const data = await response.json();
+          alert('Error! ' + data.message);
         }
       } catch (error) {
-        console.error('Error authenticating user:', error);
+        console.error('Error authenticating user: ', error);
         setCurrentUser(null);
+        alert('Login failed!');
       }
     }
   }

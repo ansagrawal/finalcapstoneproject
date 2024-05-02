@@ -47,10 +47,11 @@ export function LoginForm(params) {
                 await response.json();
                 alert('User registered!');
             } else {
-                alert('An error occurred during registration.');
+                const data = await response.json();
+                alert('Error! ' + data.message);
             }
         } catch (error) {
-            console.error('Error registering user:', error);
+            console.error('Error registering user: ', error);
             alert('An error occurred during registration.');
         }
     };

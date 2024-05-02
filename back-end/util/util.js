@@ -13,25 +13,25 @@ function validateNewUser(req, res, next) {
     const newUser = req.body;
     //Check for request body
     if (!newUser || Object.keys(newUser).length === 0) {
-        return res.status(400).send('Missing request body');
+        return res.status(400).send({ message: 'Missing request body' });
     }
     // Checking if the request body contains an id field
     if (!newUser.username) {
-        return res.status(400).send('Username is required');
+        return res.status(400).send({ message: 'Username is required' });
     }
     // Checking if the request body contains an email field
     if (!newUser.email) {
-        return res.status(400).send('Email is required');
+        return res.status(400).send({ message: 'Email is required' });
     }
     if (!validator.isEmail(newUser.email)) {
-        return res.status(400).send('Invalid email format');
+        return res.status(400).send({ message: 'Invalid email format' });
     }
     // Checking if the request body contains a password field
     if (!newUser.password) {
-        return res.status(400).send('Password is required');
+        return res.status(400).send({ message: 'Password is required' });
     }
     if (!validator.isStrongPassword(newUser.password)) {
-        return res.status(400).send('Strong Password required');
+        return res.status(400).send({ message: 'Strong Password required' });
     }
 
     next();

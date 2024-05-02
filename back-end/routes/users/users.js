@@ -18,7 +18,7 @@ router.post('/', validateNewUser, async (req, res) => {
             return res.status(201).json(newUser); // Created (201) with admin data
         }
         console.error(errMessage); // Log error message for debugging
-        return res.status(400).send(errMessage); // Bad Request (400) with error message
+        return res.status(400).send({ message: errMessage }); // Bad Request (400) with error message
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error'); // Generic error for unexpected issues
@@ -32,9 +32,8 @@ router.post('/authenticate', async (req, res) => {
     }
 
     const registeredUser = await findUser(username);
-    console.log(registeredUser);
     if (!registeredUser || !await isAuthenticated(password, registeredUser.password)) {
-        return res.status(401).send({ message: 'Invalid username or password' });
+        return res.status(401).send({ message: 'Incorrect username or password' });
     }
     let token;
     if (validateEmailDomain(registeredUser.email)) {
