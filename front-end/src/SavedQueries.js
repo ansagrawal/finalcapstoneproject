@@ -12,6 +12,7 @@ export function SavedQueries(params) {
             // Clear saved queries and update the displayed list
             const emptyQueryList = [];
             params.setSavedQueries(emptyQueryList);
+            params.saveQueryList(emptyQueryList);
             setShowResetAlert(false);
         } else {
             // Show confirmation alert
@@ -36,7 +37,7 @@ export function SavedQueries(params) {
 
     return (
         <div className="saved-queries-container">
-            {params.currentUser && ( // Display reset button only when a user is logged in
+            {params.currentUser && params.savedQueries && params.savedQueries.length > 0 && ( // Display reset button only when a user is logged in
                 <button onClick={resetSavedQueries}>Reset</button>
             )}
             {showResetAlert && (
