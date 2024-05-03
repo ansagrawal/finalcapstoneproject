@@ -88,17 +88,17 @@ export function LoginForm(params) {
 
     return (
         <div className="box" style={{ maxWidth: "unset" }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div style={{ marginRight: '10px' }} className={params.currentUser ? "hidden" : "visible"}>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ marginRight: '10px', marginBottom: '10px' }} className={params.currentUser ? "hidden" : "visible"}>
                     <label htmlFor="username">Username: </label>
                     <input type="text" size={10} id="username" required={true} name="username" value={params.credentials.username} onChange={handleChange} />
                 </div>
-                <div style={{ marginRight: '10px' }} className={params.currentUser ? "hidden" : "visible"}>
+                <div style={{ marginRight: '10px', marginBottom: '10px' }} className={params.currentUser ? "hidden" : "visible"}>
                     <label htmlFor="password">Password: </label>
                     <input type="password" size={10} id="password" required={true} name="password" value={params.credentials.password} onChange={handleChange} />
                 </div>
                 {showEmailField && (
-                    <div style={{ marginRight: '10px' }}>
+                    <div style={{ marginRight: '10px', marginBottom: '10px' }}>
                         <label htmlFor="email">Email: </label>
                         <input type="email" size={10} id="email" required={true} name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
