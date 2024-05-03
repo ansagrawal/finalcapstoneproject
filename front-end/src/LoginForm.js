@@ -60,6 +60,32 @@ export function LoginForm(params) {
         setEmail('');
     };
 
+    function createAuthHeader() {
+        const storedToken = localStorage.getItem(params.currentUser.username);
+        const authHeader = storedToken ? { 'Authorization': `Bearer ${storedToken}` } : {};
+        return authHeader;
+    }
+
+    const handleAuditLogs = async () => {
+        const authHeader = createAuthHeader();
+        await fetch('/admin/access-logs', { headers: authHeader })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const newTab = window.open();
+                const doc = newTab.document;
+                doc.write(data);
+                doc.close(); // Close the document after writing
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    };
+
     return (
         <div className="box" style={{ maxWidth: "unset" }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -77,13 +103,18 @@ export function LoginForm(params) {
                         <input type="email" size={10} id="email" required={true} name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                 )}
+                {params.currentUser && localStorage.getItem(params.currentUser.username) && (
+                    <div style={{ marginLeft: 'auto', marginRight: '10px' }}>
+                        <button onClick={handleAuditLogs}>Audit Logs</button>
+                    </div>
+                )}
             </div>
             &nbsp;
             <button className={showEmailField ? "hidden" : "visible"} onClick={params.login}>
                 {(params.currentUser) ? "Logout" : "Login"}
             </button>
             <p className={showEmailField ? "hidden" : "visible"}>
-                User:<span style={{ fontWeight: "bold" }} >{(params.currentUser) ? params.currentUser.username : "not logged in"}</span>
+                User:<span style={{ fontWeight: "bold" }}>{(params.currentUser) ? params.currentUser.username : "not logged in"}</span>
             </p>
             <div className={(params.currentUser) ? "hidden" : "visible"}>
                 <div>
@@ -92,7 +123,6 @@ export function LoginForm(params) {
                         <button onClick={handleBackToLogin}>Back to Login</button>
                     )}
                 </div>
-
             </div>
         </div>
     );
